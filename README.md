@@ -1,12 +1,53 @@
-# React + Vite
+# 🔍 GitHub Repo Analyzer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sleek and interactive web app that lets users analyze public GitHub repositories using GitHub’s REST API. View real-time insights into repo details, contributors, languages used, open issues, commit activity, and more — all in one place.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Demo
 
-## Expanding the ESLint configuration
+👉 [Visit the App](https://github-repo-anylizer-azr7.vercel.app/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 📸 Screenshots
+
+![Screenshot 1](/public/screenshots/Screenshot%202025-08-05%20222452.png)
+![Screenshot 2](/public/screenshots/Screenshot%202025-08-05%20222516.png)
+![Screenshot 3](/public/screenshots/Screenshot%202025-08-05%20222604.png)
+![Screenshot 4](/public/screenshots/Screenshot%202025-08-05%20222622.png)
+
+---
+
+## 🛠️ Features
+
+- 🔎 Search any public GitHub repository
+- 📄 Repo overview: description, stars, forks, watchers, etc.
+- 👥 Top contributors with avatar and commit count
+- 🧠 Language usage displayed with graphs
+- 🐛 Open issues with labels and links
+- 📊 Commit activity overview (weekly/total)
+- 🌈 Responsive UI with gradient footer
+
+---
+
+## 📦 Tech Stack
+
+| Category       | Tech                     |
+| -------------- | ------------------------ |
+| **Frontend**   | React, Tailwind CSS      |
+| **State**      | Zustand  |
+| **Charts**     | Recharts     |
+| **Icons**      | Lucide React             |
+| **API**        | GitHub REST API          |
+| **Deployment** | Vercel  |
+
+---
+
+## ⚙️ Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/github-repo-analyzer.git
+   cd github-repo-analyzer
+   ```
