@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { apiInstance } from "../api/apiInstance";
 
-const useGithubStore = create((set) => ({
+export const useGithubStore = create((set) => ({
   isLoading: false,
   error: null,
   repoInfo: null,
@@ -9,43 +9,52 @@ const useGithubStore = create((set) => ({
   languages: {},
   issues: [],
   commitActivity: [],
-  loadRepoData: async function (username, repoName) {
-    // console.log(username);
-    // console.log(repoName);
+
+  loadRepoData: async (username, repoName) => {
     set({ isLoading: true, error: null });
+
     try {
-      const [repoInfo, contributors, languages, issues, commitActivity] =
+
+      // Parallel API Requests
+      const [repoRes, contributorsRes, languagesRes, issuesRes] =
         await Promise.all([
-          await apiInstance
-            .get(`/${username}/${repoName}`)
-            .then((res) => res.data),
-          await apiInstance
-            .get(`/${username}/${repoName}/contributors`)
-            .then((res) => res.data),
-          await apiInstance
-            .get(`/${username}/${repoName}/languages`)
-            .then((res) => res.data),
-          await apiInstance
-            .get(`/${username}/${repoName}/issues`)
-            .then((res) => res.data),
-          await apiInstance
-            .get(`/${username}/${repoName}/stats/commit_activity`)
-            .then((res) => res.data),
+          apiInstance.get(`/${username}/${repoName}`),
+          apiInstance.get(`/${username}/${repoName}/contributors`),
+          apiInstance.get(`/${username}/${repoName}/languages`),
+          apiInstance.get(`/${username}/${repoName}/issues?per_page=10`),
         ]);
+
+      let commitActivity = [];
+
+      // commit activity endpoint sometimes fails
+      try {
+        const commitRes = await apiInstance.get(
+          `/${username}/${repoName}/stats/commit_activity`
+        );
+        commitActivity = commitRes.data || [];
+      } catch (err) {
+        console.warn("Commit activity not available");
+      }
+
       set({
-        repoInfo,
-        contributors,
-        languages,
-        issues,
+        repoInfo: repoRes.data,
+        contributors: contributorsRes.data,
+        languages: languagesRes.data,
+        issues: issuesRes.data,
         commitActivity,
         isLoading: false,
       });
+
     } catch (error) {
-      alert("something is wrong");
-      console.log("Error while fetching data", error);
+
+      console.error("GitHub API Error:", error);
+
       set({
         isLoading: false,
-        error: error.message || "Something went wrong try again",
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
         repoInfo: null,
         contributors: [],
         languages: {},
@@ -54,17 +63,14 @@ const useGithubStore = create((set) => ({
       });
     }
   },
-  clearData: () => {
+
+  clearData: () =>
     set({
-      username: "",
-      repoName: "",
       repoInfo: null,
       contributors: [],
       languages: {},
       issues: [],
       commitActivity: [],
-    });
-  },
+      error: null,
+    }),
 }));
-
-export { useGithubStore };
